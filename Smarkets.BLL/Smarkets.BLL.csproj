@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Declan Taylor</Authors>
+    <Company>Declan Taylor</Company>
+    <Version>1.0.21</Version>
+    <AssemblyVersion>1.0.31.0</AssemblyVersion>
+    <FileVersion>1.0.31.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smarkets\Smarkets.DAL\Smarkets.DAL.XML.csproj" />
+    <ProjectReference Include="..\..\Smarkets\Smarkets.Map2\Smarkets.Map.csproj" />
+    <ProjectReference Include="..\Smarkets.DAL.Sqlite\Smarkets.DAL.Sqlite.csproj" />
+  </ItemGroup>
+
+</Project>

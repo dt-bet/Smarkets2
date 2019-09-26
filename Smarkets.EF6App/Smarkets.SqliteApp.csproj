@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyVersion>1.0.12.0</AssemblyVersion>
+    <FileVersion>1.0.12.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="WindowsBase">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\WindowsBase.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="UtilityDAL.Sqlite" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smarkets\Smarkets.DAL\Smarkets.DAL.XML.csproj" />
+    <ProjectReference Include="..\..\Smarkets\Smarkets.Map2\Smarkets.Map.csproj" />
+    <ProjectReference Include="..\Smarkets.BLL\Smarkets.BLL.csproj" />
+    <ProjectReference Include="..\Smarkets.DAL.Sqlite\Smarkets.DAL.Sqlite.csproj" />
+    <ProjectReference Include="..\Smarkets.Entity\Smarkets.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\netcoreapp2.0\Data\Deprecated\" />
+  </ItemGroup>
+
+</Project>

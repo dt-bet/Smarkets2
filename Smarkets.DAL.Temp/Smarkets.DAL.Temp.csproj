@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smarkets\Smarkets.DAL\Smarkets.DAL.XML.csproj" />
+    <ProjectReference Include="..\Smarkets.Entity\Smarkets.Entity.csproj" />
+  </ItemGroup>
+
+</Project>

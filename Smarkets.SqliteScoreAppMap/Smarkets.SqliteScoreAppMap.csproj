@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="UtilityEnum" Version="1.0.8-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FootballSystem\Football.Enum\Football.Enum.csproj" />
+    <ProjectReference Include="..\..\FootballSystem\FootballSystem.Entity.SQLite\FootballSystem.Entity.SQLite.csproj" />
+    <ProjectReference Include="..\Smarkets.DAL.Temp\Smarkets.DAL.Temp.csproj" />
+  </ItemGroup>
+
+</Project>

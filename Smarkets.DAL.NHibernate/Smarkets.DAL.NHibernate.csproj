@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="NHibernate" Version="5.1.3" />
+    <PackageReference Include="UtilityEnum" Version="1.0.8-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FluentNHibernateEx\FluentNHibernateEx.csproj" />
+    <ProjectReference Include="..\..\FootballSystem\FootballSystem.Map\FootballSystem.Map.csproj" />
+    <ProjectReference Include="..\..\FootballSystem\FootballSystem.Model\FootballSystem.Model.csproj" />
+    <ProjectReference Include="..\..\Smarkets\Smarkets.Model\Smarkets.Model.csproj" />
+    <ProjectReference Include="..\..\UtilityStandard\UtilityDAL\UtilityDAL\UtilityDAL.csproj" />
+    <ProjectReference Include="..\Smarkets.Entity\Smarkets.Entity.csproj" />
+  </ItemGroup>
+
+</Project>

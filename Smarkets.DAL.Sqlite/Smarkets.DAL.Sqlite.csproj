@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Declan Taylor</Authors>
+    <Company>Declan Taylor</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.6</Version>
+    <AssemblyVersion>1.0.31.0</AssemblyVersion>
+    <FileVersion>1.0.31.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SportsBetting.Entity.Sqlite" Version="1.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smarkets.Common\Smarkets.Common.csproj" />
+    <ProjectReference Include="..\Smarkets.Entity\Smarkets.Entity.csproj" />
+  </ItemGroup>
+
+</Project>
