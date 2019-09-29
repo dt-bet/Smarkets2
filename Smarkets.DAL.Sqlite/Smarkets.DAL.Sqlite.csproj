@@ -6,8 +6,8 @@
     <Company>Declan Taylor</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.6</Version>
-    <AssemblyVersion>1.0.31.0</AssemblyVersion>
-    <FileVersion>1.0.31.0</FileVersion>
+    <AssemblyVersion>1.0.41.0</AssemblyVersion>
+    <FileVersion>1.0.41.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

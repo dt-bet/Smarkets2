@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UtilityDAL;
 
 namespace Smarkets.SqliteApp
@@ -15,41 +16,45 @@ namespace Smarkets.SqliteApp
         {
             System.IO.Directory.CreateDirectory("../../../Data");
             var sqlite = new UtilityDAL.Sqlite.Repository<UtilityDAL.Model.KeyValueDate, string>(_ => _.Key);
-
-            var xx = (from field in typeof(Betting.Enum.ContractType).GetFields()
-                      let attribute = Attribute.GetCustomAttribute(field, typeof(UtilityEnum.NamesAttribute)) as UtilityEnum.NamesAttribute
-                      where attribute != null
-                      let names = attribute.Names.Concat(new[] { field.Name }).ToArray()
-                      select (names, (Betting.Enum.ContractType)field.GetValue(null)))
-                                                 .ToArray();
-
-            var x4x = (from field in typeof(Betting.Enum.MarketType).GetFields()
-                      let attribute = Attribute.GetCustomAttribute(field, typeof(UtilityEnum.NamesAttribute)) as UtilityEnum.NamesAttribute
-                      where attribute != null
-                      let names = attribute.Names.Concat(new[] { field.Name }).ToArray()
-                      select (names, (Betting.Enum.MarketType)field.GetValue(null)))
-                                            .ToArray();
-
+            object lck = new object();
             foreach (var filename in from file in System.IO.Directory.EnumerateFiles(Smarkets.Constants.XMLDirectory)
                                      let name = System.IO.Path.GetFileNameWithoutExtension(file)
-                                     //where sqlite.SelectById(name) == null
+                                     where sqlite.SelectById(name) == null
                                      select new { file, name })
             {
 
                 var deserialisedFile = DAL.XML.Repo.GetOdds(filename.file);
                 Console.WriteLine("file:" + deserialisedFile.TimeStamp + "       @ " + DateTime.Now);
 
-                var events = deserialisedFile.Events/*.Where(DAL.XML.Repo.GetPredicate())*/.Select(_ => (Model.XML.Event)_).Where(a=>a.Id== 785412).ToArray();
+                var events = deserialisedFile.Events.Where(DAL.XML.Repo.GetPredicate()).ToArray();
 
                 var entities = Smarkets.Entity.EntityMap.MapToEntity(events, deserialisedFile.TimeStamp);
 
                 var leagues = Smarkets.Entity.EntityMap.MapToLeague(events);
 
-                Console.WriteLine("Inserted Matches " + Smarkets.DAL.Sqlite.MatchRepository.TransferToDB(entities.ToArray()));
+                Console.WriteLine("Inserted Matches - " + Smarkets.DAL.Sqlite.MatchRepository.TransferToDB(entities.ToArray()));
 
                 Console.WriteLine("Inserted Leagues - " + Smarkets.DAL.Sqlite.MatchRepository.TransferToDB(leagues.ToArray()));
 
-                //sqlite.Insert(new UtilityDAL.Model.KeyValueDate { Key = filename.name,Value=filename.file,  Date = DateTime.Now.Ticks });
+                lock (lck)
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
+                        {
+                            sqlite.Insert(new UtilityDAL.Model.KeyValueDate { Key = filename.name, Value = filename.file, Date = DateTime.Now.Ticks });
+                            break;
+                        }
+                        catch(Exception ex)
+                        {
+                            Thread.Sleep(1000);
+                        }
+                        if(i==10)
+                        {
+                            throw new Exception("Exceeded retry count");
+                        }
+                    }
+                }
             }
 
             // Console.WriteLine("ended @ " + fileend);

@@ -1,4 +1,5 @@
-﻿using Smarkets.Entity;
+﻿using Betting.Enum;
+using Smarkets.Entity;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Smarkets.DAL.Sqlite
 
     public class MatchRepository
     {
-        const string directoryName = "../../../Data2";
+        const string directoryName = "../../../Data";
 
         public static int TransferToDB(IEnumerable<Entity.Match> matches, string directoryName = directoryName)
         {
@@ -57,7 +58,7 @@ namespace Smarkets.DAL.Sqlite
                         List<Contract> econtracts = new List<Contract>();
                         List<Price> eprices = new List<Price>();
 
-                        foreach (var smarket in ematch.Markets)
+                        foreach (var smarket in ematch.Markets.Where(m=>m.Key  == (byte)MarketType.FullTimeResult))
                         {
                             smarket.ParentId = ematch.Id;
                             if (!markets.Contains(smarket))
@@ -78,8 +79,8 @@ namespace Smarkets.DAL.Sqlite
                                     //price.Parent = contract;
                                     //if (!prices.Contains(price))
                                     //{
-                                        eprices.Add(price);
-                                    }
+                                    eprices.Add(price);
+
                                 }
 
                             }
@@ -88,8 +89,6 @@ namespace Smarkets.DAL.Sqlite
                         connection.InsertAll(econtracts);
                         connection.InsertAll(eprices);
                         //var exceptMarkets=
-
-
                     }
                 }
                 catch (Exception ex)
@@ -165,12 +164,15 @@ namespace Smarkets.DAL.Sqlite
                                                                          join price in connection.Table<Price>().ToArray() on
                                                                          contract.ContractId equals price.ParentId
                                                                          into temp
+                                                                         where temp.Any()
                                                                          select new { temp, contract }
                                                          on market.MarketId equals jcontract.contract.ParentId
                                                           into temp
+                                                       where temp.Any()
                                                        select new { temp, market } on
                                                      match.EventId equals jmarket.market.ParentId
                                           into temp
+                                       where temp.Any()
                                        select new { temp, match })
                 {
                     List<Market> nmarkets = new List<Market>();

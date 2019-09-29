@@ -65,7 +65,22 @@ namespace Smarkets.Entity
         }
         public static IList<Smarkets.Entity.Match> MapToEntity(this IList<Model.XML.Event> fdm, DateTime dt)
         {
-            return fdm.Select(_ => Mapper.Map<Model.XML.Event, Smarkets.Entity.Match>(_, opt => opt.Items["Date"] = dt)).ToArray();
+            return fdm.Select(_ =>
+            {
+                Smarkets.Entity.Match match = null;
+                try
+                {
+                    match = Mapper.Map<Model.XML.Event, Smarkets.Entity.Match>(_, opt => opt.Items["Date"] = dt);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                return match;
+            })
+                .Where(a => a != null)
+                .AsParallel()
+            .ToArray();
         }
 
         public static IList<Smarkets.Entity.League> MapToLeague(this IList<Model.XML.Event> fdm)
