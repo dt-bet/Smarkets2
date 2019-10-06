@@ -9,6 +9,13 @@ namespace Smarkets.Model.JSON
     public class Events
     {
         public Event[] events { get; set; }
+
+        public Pagination pagination { get; set; }
+    }
+
+    public class Pagination
+    {
+        public string next_page { get; set; }
     }
 
     public class Event
