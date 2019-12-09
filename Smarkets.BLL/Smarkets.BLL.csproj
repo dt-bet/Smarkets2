@@ -11,6 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Scrape.Entity" Version="1.2.2" />
+    <PackageReference Include="SportsBetting.Entity.Sqlite" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Smarkets\Smarkets.DAL\Smarkets.DAL.XML.csproj" />
     <ProjectReference Include="..\..\Smarkets\Smarkets.Map2\Smarkets.Map.csproj" />
     <ProjectReference Include="..\Smarkets.DAL.Sqlite\Smarkets.DAL.Sqlite.csproj" />

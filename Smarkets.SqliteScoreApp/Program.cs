@@ -29,6 +29,7 @@ namespace Smarkets.SqliteScoreApp
 
         private static void Main(string[] args)
         {
+            SQLitePCL.Batteries.Init();
             DateTime minDate = File.ReadAllLines("../../../Data/filesparsed.txt")
                 .Where(_ => !string.IsNullOrEmpty(_))
                 .Select(_ => DateTime.ParseExact(_, Constants.dateTimeFormat, CultureInfo.InvariantCulture))
@@ -51,7 +52,7 @@ namespace Smarkets.SqliteScoreApp
                 Console.WriteLine(file.TimeStamp);
                 File.AppendAllLines("../../../Data/filesparsed.txt", new[] { file.TimeStamp.ToString(Smarkets.Constants.dateTimeFormat) });
             }
-
+            Console.WriteLine("Finished");
             Console.ReadLine();
         }
 

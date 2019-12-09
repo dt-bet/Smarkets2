@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Optional;
+using Optional.Collections;
 using Scrape.Entity;
 using Smarkets.Entity;
 
@@ -16,19 +17,19 @@ namespace Smarkets.WpfApp2
 
         static Class1()
         {
-            xx = Smarkets.DAL.Sqlite.ScoreMatch.MatchDefault().Take(100);
+            xx = Smarkets.DAL.Sqlite.ScoreMatch.MatchDefault();
         }
 
-        public static IEnumerable<Betfair.Model.Football.ThreeWayOdd> GetOdds() => xx
-            .Select(Maps.Map)
-            .Where(a => a.HasValue)
-            .Select(a=>a.ValueOr(default(Betfair.Model.Football.ThreeWayOdd)));
-
-
-
+        public static IEnumerable<Option<Betfair.Model.Football.ThreeWayOdd>> GetOdds() => xx.Select(Maps.Map);
+  
 
         public static IEnumerable<Betfair.Model.Football.ThreeWayResult> GetResults() => xx.Select(Maps.MapToResult);
 
+
+        public static IEnumerable<(Betfair.Model.Football.ThreeWayResult, Option<Betfair.Model.Football.ThreeWayOdd>)> SelectAll()
+        {
+            return xx.Select(x => (Maps.MapToResult(x), Maps.Map(x)));
+        }
     }
 
 
@@ -43,47 +44,35 @@ namespace Smarkets.WpfApp2
 
         public static Option<Betfair.Model.Football.ThreeWayOdd> Map(Smarkets.Entity.Match match)
         {
-
-
             Option<string> xx = default;
             try
             {
                 xx = lrepo.Get("Smarkets", match.League, "BetfairName");
-                if(string.IsNullOrEmpty(xx.ValueOr(string.Empty)))
-                {
-                    return default;
-                }
             }
             catch (Exception ex)
             {
                 return Option.None<Betfair.Model.Football.ThreeWayOdd>();
             }
 
-            var odds = GetOdds(match).LastOrDefault();
-            if (odds == default)
-            {
-                return default;
-            }
+            //Console.WriteLine("found match");
+         
+            return GetOdds(match).LastOrNone().FlatMap(o=> xx.Map(x=>
 
-            xx.MatchSome(a =>
-            {
-                Console.WriteLine();
-            });
-            return Option.Some(new Betfair.Model.Football.ThreeWayOdd
+            new Betfair.Model.Football.ThreeWayOdd
             {
                 EventDate = new DateTime(match.Start),
-                Competition = xx.ValueOr(string.Empty),
+                Competition = x,
                 CompetitionId = string.Empty,
-                MarketId = string.Empty,
-                Player1Odd = (int)odds.home,
-                Player2Odd = (int)odds.away,
-                Player3Odd = (int)odds.draw,
+                MarketId = match.EventId.ToString(),
+                Player1Odd = (int)o.home,
+                Player2Odd = (int)o.away,
+                Player3Odd = (int)o.draw,
                 Player1Id = 1,
                 Player2Id = 2,
                 Player1Name = string.Empty,
                 Player2Name = string.Empty,
-                OddsDate = new DateTime(odds.time),
-            });
+                OddsDate = new DateTime(o.time),
+            }));
 
 
         }
@@ -93,9 +82,11 @@ namespace Smarkets.WpfApp2
         {
             return new Betfair.Model.Football.ThreeWayResult
             {
+                MarketId = match.EventId.ToString(),
                 Player1Status = match.HomeScore > match.AwayScore ? Betfair.Model.EndResult.Winner : Betfair.Model.EndResult.Loser,
                 Player3Status = match.HomeScore == match.AwayScore ? Betfair.Model.EndResult.Winner : Betfair.Model.EndResult.Loser,
                 Player2Status = match.HomeScore < match.AwayScore ? Betfair.Model.EndResult.Winner : Betfair.Model.EndResult.Loser,
+                
             };
         }
 

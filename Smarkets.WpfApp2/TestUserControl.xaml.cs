@@ -1,4 +1,5 @@
-﻿using Betfair.Model;
+﻿using Betfair.Abstract;
+using Betfair.Model;
 using OxyPlotEx.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -51,17 +52,17 @@ namespace Smarkets.WpfApp2
 
             //var xs = new Betfair.DAL.FootballConnection().GetResults();
 
-            var xx = Class1.GetOdds().AsParallel().ToArray();
+            var xx = Class1.GetOdds().AsParallel().Take(100).ToArray();
 
             var xs = Class1.GetResults().AsParallel().ToArray();
 
             foreach (var dow in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
             {
-                BetfairBet[] ty;
+                Betfair.Abstract.IBet[] ty;
                 try
                 {
-                    ty = FootballBet.BetService.MakeBets(xx
-                        .Where(a => new DateTime(a.EventDate).DayOfWeek == dow), new List<BetfairBet>()).ToArray();
+                    var js = xx.Where(a => a.EventDate.DayOfWeek == dow).ToArray();
+                    ty = new FootballBet.BetService().MakeBets(js.Cast<Betfair.Abstract.IOdd>()).ToArray();
                 }
                 catch (Exception e)
                 {
@@ -70,10 +71,9 @@ namespace Smarkets.WpfApp2
                 var io = Helper.GetProfit(ty, xs);
                 yield return io.ByHDASelection(dow.ToString()).ToArray();
             }
-            FootballBet.BetService.MakeBets(xx, new List<BetfairBet>());
+            new FootballBet.BetService().MakeBets(xx);
            ; ;
 
-            ; ;
         }
     }
 
@@ -87,12 +87,12 @@ namespace Smarkets.WpfApp2
                  .Select(_ =>
                  {
                      double avg = _.Average(a => a.Amount) * 1d / _.Average(a => a.Wager);
-                     (DateTime, double) dd = (new DateTime(_.First().EventDate), avg);
+                     (DateTime, double) dd = (_.First().EventDate, avg);
                      return new KeyValuePair<string, (DateTime, double)>(name, dd);
                  });
         }
 
-        public static IEnumerable<Profit> GetProfit(IEnumerable<BetfairBet> bets, IEnumerable<Betfair.Model.Football.Result> results)
+        public static IEnumerable<Profit> GetProfit(IEnumerable<Betfair.Abstract.IBet> bets, IEnumerable<Betfair.Abstract.IResult> results)
         {
             var now = DateTime.Now;
             var pastBets = bets;// 
@@ -119,49 +119,17 @@ namespace Smarkets.WpfApp2
         }
 
 
-        public static int CalculateProfit(Betfair.Model.Football.Result result, BetfairBet bet)
+        public static int CalculateProfit(IResult result, IBet bet)
         {
-            if (bet == null)
+            if (bet == null || result == null)
+            {
                 return 0;
+            }
 
-            long? ss = (result.Player1Status == 1 && result.Player2Status == 2 && result.Player3Status == 2 ? (long?)result.Player1Id : null);
-            long? ss1 = (result.Player1Status == 2 && result.Player2Status == 1 && result.Player3Status == 2 ? (long?)result.Player2Id : null);
-            long? ss2 = (result.Player1Status == 2 && result.Player2Status == 2 && result.Player3Status == 1 ? (long?)result.Player3Id : null);
+            var success = bet.SelectionId == result.WinnerId;
+            return (bet.Amount > 0) ? bet.Amount * ((success ? bet.Price : 0) - 100) : 0;
 
-            var winner = new[] { ss, ss1, ss2 }.SingleOrDefault(a => a.HasValue);
-            long[] xx = new long[] { result.Player1Id, result.Player2Id };
-            long[] xdx = new long[] { result.Player1Id, result.Player2Id, result.Player3Id };
-            if (winner != null && xdx.Contains(bet.SelectionId))
-            {
-                var success = bet.SelectionId == winner;
-                return (bet.Amount > 0) ? bet.Amount * ((success ? bet.Price : 0) - 100) : 0;
-            }
-            else if (new[] { result.Player1Status, result.Player1Status, result.Player1Status }.All(a => a == (int)0))
-            {
-                Console.WriteLine("missing result");
-            }
-            else if (!xdx.Contains(bet.SelectionId))
-            {
-                if (result.Player3Id == 0)
-                {
-                    if (winner == result.Player3Id)
-                    {
-                        return (bet.Amount > 0) ? bet.Amount * (bet.Price - 100) : 0;
-                    }
-                    else
-                    {
-                        return (bet.Amount > 0) ? bet.Amount * -100 : 0;
-                    }
-                }
-                Console.WriteLine("missing winner");
-            }
-            else
-            {
-                Console.WriteLine("winner equals null");
-            }
-            return 0;
         }
-
     }
 }
 

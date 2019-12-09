@@ -15,7 +15,7 @@ namespace Smarkets.DAL.Sqlite
         }
         private static readonly string teamsDatabase = Helper.GetPath("..//..//..///Smarkets.SqliteScoreApp//bin//debug//netcoreapp2.0//Teams.sqlite");
 
-        private static readonly string data = "..//..//..//Smarkets.EF6App//Data";
+        private static readonly string data = "..//..//..//..//Smarkets.EF6App//Data";
 
 
 

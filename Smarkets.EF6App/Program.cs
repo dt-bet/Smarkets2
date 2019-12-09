@@ -28,9 +28,9 @@ namespace Smarkets.SqliteApp
 
                 var events = deserialisedFile.Events.Where(DAL.XML.Repo.GetPredicate()).ToArray();
 
-                var entities = Smarkets.Entity.EntityMap.MapToEntity(events, deserialisedFile.TimeStamp);
+                var entities = Smarkets.XML.Map.EntityMap.MapToEntity(events, deserialisedFile.TimeStamp);
 
-                var leagues = Smarkets.Entity.EntityMap.MapToLeague(events);
+                var leagues = Smarkets.XML.Map.EntityMap.MapToLeague(events);
 
                 Console.WriteLine("Inserted Matches - " + Smarkets.DAL.Sqlite.MatchRepository.TransferToDB(entities.ToArray()));
 

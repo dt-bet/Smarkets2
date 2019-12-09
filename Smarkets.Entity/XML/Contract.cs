@@ -1,5 +1,4 @@
-﻿using MoreLinq;
-using SQLite;
+﻿using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +29,14 @@ namespace Smarkets.Entity
         public IOrderedEnumerable<Price> MaxOffers => Prices
                                                         .Where(a => a.Type.Equals((byte)Betting.Enum.PriceType.Offer))
                                                         .GroupBy(p => p.Time)
-                                                        .SelectMany(a => a.MaxBy(v => v.Value))
+                                                        .SelectMany(a => a.GroupBy(v => v.Value).OrderBy(aa => aa.Key).Last())
                                                         .OrderBy(a => a.Time);
 
         #region IEquatable
 
         public bool Equals(Contract contract) => Key == contract?.Key
                                                  && Condition == contract?.Condition;
-   
+
 
         public override int GetHashCode()
         {

@@ -5,7 +5,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Collections.Generic;
 using MoreLinq;
-using FootballSystem.Entity.Sqlite;
 
 namespace Smarkets.SqliteScoreApp
 {
