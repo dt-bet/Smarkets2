@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Smarkets.Tennis.SqliteApp": {
+      "commandName": "Project",
+      "commandLineArgs": "Day_Points"
+    }
+  }
+}

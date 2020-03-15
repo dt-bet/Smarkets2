@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smarkets.Map", "..\Smarkets
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smarkets.Model", "Smarkets.Model2\Smarkets.Model.csproj", "{630119F1-C81B-4DE4-889C-7AABE63A72F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smarkets.WebAPI2", "Smarkets.WebAPI2\Smarkets.WebAPI2.csproj", "{C17B7AC4-8BC9-4650-8DFA-BF7E5406C555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smarkets.WebAPI", "Smarkets.WebAPI2\Smarkets.WebAPI.csproj", "{C17B7AC4-8BC9-4650-8DFA-BF7E5406C555}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smarkets.Test", "Smarkets.Test\Smarkets.Test.csproj", "{9EC7300A-4053-456D-AAD7-B6CB0A3C390B}"
 EndProject
@@ -35,7 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{28392303-3F1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarkets.WpfApp2", "Smarkets.WpfApp2\Smarkets.WpfApp2.csproj", "{742796B7-8A69-496E-A801-202BC13B177C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarkets.WpfAppCore", "Smarkets.WpfAppCore\Smarkets.WpfAppCore.csproj", "{8E41A838-5B9D-4299-A51F-619F5196E003}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smarkets.WpfAppCore", "Smarkets.WpfAppCore\Smarkets.WpfAppCore.csproj", "{8E41A838-5B9D-4299-A51F-619F5196E003}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smarkets.Tennis.SqliteApp", "Smarkets.Tennis.SqliteApp\Smarkets.Tennis.SqliteApp.csproj", "{0CA3B071-8A45-4740-870F-1148E080C3F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,10 @@ Global
 		{8E41A838-5B9D-4299-A51F-619F5196E003}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E41A838-5B9D-4299-A51F-619F5196E003}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E41A838-5B9D-4299-A51F-619F5196E003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CA3B071-8A45-4740-870F-1148E080C3F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CA3B071-8A45-4740-870F-1148E080C3F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CA3B071-8A45-4740-870F-1148E080C3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CA3B071-8A45-4740-870F-1148E080C3F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{F0643605-84DC-43D3-A325-537A72B4EC9E} = {ACA55CB7-66CE-47D2-BA36-7BA3FA023C88}
 		{742796B7-8A69-496E-A801-202BC13B177C} = {ACA55CB7-66CE-47D2-BA36-7BA3FA023C88}
 		{8E41A838-5B9D-4299-A51F-619F5196E003} = {ACA55CB7-66CE-47D2-BA36-7BA3FA023C88}
+		{0CA3B071-8A45-4740-870F-1148E080C3F3} = {28392303-3F17-4D6B-B55E-7EECB1E396C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64819251-28A6-4D21-AE63-E5D90C84A470}

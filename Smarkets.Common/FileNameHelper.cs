@@ -28,8 +28,13 @@ namespace Smarkets.Common
             dateTimeFormat,
             CultureInfo.InvariantCulture);
 
+
         public static DateTime GetDateTimeFromDirectory(string directoryName) => DateTime.ParseExact(directoryName, directoryDateTimeFormat, CultureInfo.InvariantCulture);
 
+        public static bool TryGetDateFromDirectoryName(string dateName, out DateTime dateTime)
+        {
+            return DateTime.TryParseExact(dateName, directoryDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime);
+        }
 
 
         public static string MakeValidFileName(string name)
@@ -46,6 +51,9 @@ namespace Smarkets.Common
         {
             return date.ToString(directoryDateTimeFormat);
         }
+
+
+
 
     }
 }

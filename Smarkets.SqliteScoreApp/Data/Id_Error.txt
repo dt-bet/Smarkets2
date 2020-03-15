@@ -42,3 +42,7 @@
 2019_05_05T21_04_07, 2119408, No such host is known No such host is known
 2019_05_05T21_04_07, 2119409, No such host is known No such host is known
 2019_05_05T21_04_07, 2119410, No such host is known No such host is known
+2017_01_19T00_00_00, 792251, The remote server returned an error: (500) INTERNAL SERVER ERROR.
+2017_01_19T00_00_00, 792252, The remote server returned an error: (500) INTERNAL SERVER ERROR.
+2017_01_19T00_00_00, 792251, The remote server returned an error: (500) INTERNAL SERVER ERROR.
+2017_01_19T00_00_00, 792252, The remote server returned an error: (500) INTERNAL SERVER ERROR.

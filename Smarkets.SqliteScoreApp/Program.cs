@@ -30,6 +30,97 @@ namespace Smarkets.SqliteScoreApp
         private static void Main(string[] args)
         {
             SQLitePCL.Batteries.Init();
+
+            if (true)
+                DownloadAndParseAndStoreTennisTeams();
+            else if (false)
+                DownloadAndParseAndStoreTennisScores();
+            else
+                DownloadAndParseAndStoreFootballScores();
+        }
+
+
+
+        private static void DownloadAndParseAndStoreTennisScores()
+        {
+
+            var dir = System.IO.Directory.CreateDirectory("../../../Data/Tennis");
+            var sqlite = new UtilityDAL.Sqlite.KeyValueLite(dir.FullName);
+
+            foreach (var (date, directory) in from directory in System.IO.Directory.EnumerateDirectories(@"../../../../Smarkets.Tennis.SqliteApp/Data")
+                                              let name = System.IO.Path.GetFileName(directory)
+                                              where Common.FileNameHelper.TryGetDateFromDirectoryName(name, out _)
+                                              where sqlite.FindDate(directory) == null
+                                              let date = Common.FileNameHelper.GetDateTimeFromDirectory(name)
+                                              select
+                                              (date, directory))
+            {
+
+                var info = MatchRepository.SelectInformation(directory);
+
+                //var ids = Smarkets.DAL.Sqlite.MatchRepository.Select(date).Select(a => a.EventId.ToString()).ToArray();
+                var newResults = Download2(100, date, info.Select(a => a.id.ToString()).ToArray());
+
+                Console.WriteLine($"results downloaded {newResults.Count()}");
+                foreach (var (ifo, newResult) in from ifo in info
+                                                 join newResult in newResults
+                                                 on ifo.id.ToString() equals newResult.id
+                                                 select (ifo, newResult))
+                {
+                    int transferred = MatchRepository.TransferToDB(newResult.Item2, ifo.name);
+                    Console.WriteLine($"results added {transferred}");
+                    Console.Write(ifo.name);
+                    Console.Write(ifo.id);
+                }
+
+                sqlite.Insert(new KeyValuePair<string, long>(directory, date.Ticks));
+            }
+            Console.WriteLine("Finished");
+            Console.ReadLine();
+        }
+
+        private static void DownloadAndParseAndStoreTennisTeams()
+        {
+
+            var dir = System.IO.Directory.CreateDirectory("../../../Data/Tennis/Teams");
+            var sqlite = new UtilityDAL.Sqlite.KeyValueLite(dir.FullName);
+
+            foreach (var (date, directory) in from directory in System.IO.Directory.EnumerateDirectories(@"../../../../Smarkets.Tennis.SqliteApp/Data")
+                                              let name = System.IO.Path.GetFileName(directory)
+                                              where Common.FileNameHelper.TryGetDateFromDirectoryName(name, out _)
+                                              where sqlite.FindDate(directory) == null
+                                              let date = Common.FileNameHelper.GetDateTimeFromDirectory(name)
+                                              select
+                                              (date, directory))
+            {
+
+                var info = MatchRepository.SelectInformation(directory);
+
+                //var ids = Smarkets.DAL.Sqlite.MatchRepository.Select(date).Select(a => a.EventId.ToString()).ToArray();
+                var newTeams = DownloadCompetitors(100, date, info.Select(a => a.id.ToString()).ToArray());
+
+                Console.WriteLine($"results downloaded {newTeams.Count()}");
+                foreach (var (ifo, newTeam) in from ifo in info
+                                               join newTeam in newTeams
+                                               on ifo.id.ToString() equals newTeam.id
+                                               select (ifo, newTeam))
+                {
+                    int transferred = MatchRepository.TransferToDB(newTeam.Item2, ifo.name);
+                    Console.WriteLine($"results added {transferred}");
+                    Console.Write(ifo.name);
+                    Console.Write(ifo.id);
+                }
+
+                sqlite.Insert(new KeyValuePair<string, long>(directory, date.Ticks));
+            }
+            Console.WriteLine("Finished");
+            Console.ReadLine();
+        }
+
+
+        private static void DownloadAndParseAndStoreFootballScores()
+        {
+
             DateTime minDate = File.ReadAllLines("../../../Data/filesparsed.txt")
                 .Where(_ => !string.IsNullOrEmpty(_))
                 .Select(_ => DateTime.ParseExact(_, Constants.dateTimeFormat, CultureInfo.InvariantCulture))
@@ -40,9 +131,10 @@ namespace Smarkets.SqliteScoreApp
             hsResults = get.Results;
 
             HashSet<long> dates = new HashSet<long>();
+
             // Only deserialize files with unique days
             Func<DateTime, bool> func = d => dates.Add(d.Date.Ticks);
-            foreach (var file in Smarkets.DAL.XML.Repo.SelectFiles(minDate, selector:func))
+            foreach (var file in Smarkets.DAL.XML.Repo.SelectFiles(minDate, selector: func))
             {
                 var ids = GetIds(file).ToArray();
                 var newResults = Download(100, file.TimeStamp, ids.Except(results.Select(_ => _.Id.ToString())).ToArray()).ToArray();
@@ -95,7 +187,7 @@ namespace Smarkets.SqliteScoreApp
                             yield return result;
                     // Has not entered catch block so file waiting to be parsed
                     else
-                        foreach (var result in sfd())
+                        foreach (var result in Parse())
                             yield return result;
 
                 }
@@ -104,14 +196,87 @@ namespace Smarkets.SqliteScoreApp
         }
 
 
-        static IEnumerable<Result> sfd()
+        static IEnumerable<(string id, Smarkets.Entity.XML.Result[])> Download2(int batchsize, DateTime dateTime, params string[] ids)
+        {
+            if (ids.Length > 0)
+            {
+                foreach (var idss in ids.Batch(batchsize))
+                {
+                    System.Threading.Thread.Sleep(ids.Length * 50);
+                    IEnumerable<(string id, Smarkets.Entity.XML.Result[])> results = null;
+                    try
+                    {
+                        Client.DownloadFile(new Uri(WebAPI.AddressBuilder.getStates(idss.ToArray())), TennisSmarketsFile);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        if (batchsize == 1)
+                        {
+                            File.AppendAllLines("../../../Data/Id_Error.txt", new[] { $"{dateTime.ToString(Smarkets.Constants.dateTimeFormat)}, {idss.First()}, {e.Message}" });
+                            continue;
+                        }
+                        results = Download2((int)(batchsize / 10d), dateTime, idss.ToArray());
+                    }
+                    // Has entered try catch block.
+                    if (results != null)
+                        foreach (var result in results)
+                            yield return result;
+                    // Has not entered catch block so file waiting to be parsed
+                    else
+                        foreach (var result in ParseTennisResults())
+                            yield return result;
+
+                }
+            }
+        }
+
+
+        static IEnumerable<(string id, Smarkets.Entity.XML.MatchTeam[])> DownloadCompetitors(int batchsize, DateTime dateTime, params string[] ids)
+        {
+            if (ids.Length > 0)
+            {
+                foreach (var idss in ids.Batch(batchsize))
+                {
+                    System.Threading.Thread.Sleep(ids.Length * 50);
+                    IEnumerable<(string id, Smarkets.Entity.XML.MatchTeam[])> results = null;
+                    try
+                    {
+                        Client.DownloadFile(new Uri(WebAPI.AddressBuilder.getCompetitors(idss.ToArray())), TennisCompetitorsSmarketsFile);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        if (batchsize == 1)
+                        {
+                            File.AppendAllLines("../../../Data/Id_Error.txt", new[] { $"{dateTime.ToString(Smarkets.Constants.dateTimeFormat)}, {idss.First()}, {e.Message}" });
+                            continue;
+                        }
+                        results = DownloadCompetitors((int)(batchsize / 10d), dateTime, idss.ToArray());
+                    }
+                    // Has entered try catch block.
+                    if (results != null)
+                        foreach (var result in results)
+                            yield return result;
+                    // Has not entered catch block so file waiting to be parsed
+                    else
+                        foreach (var result in ParseTennisCompetitors())
+                            yield return result;
+
+                }
+            }
+
+        }
+
+
+        static IEnumerable<Result> Parse()
         {
             foreach (var p in Newtonsoft.Json.JsonConvert.DeserializeObject<Model.JSON.States>(System.IO.File.ReadAllText("Smarkets.json")).event_states)
             {
                 Result result = default;
                 try
                 {
-                    result = Parse.GetResult(p, dictTeams, teams);
+                    result = Map.JSONToEntity.EventStateMap.GetResult(p, dictTeams, teams);
                 }
                 catch (Exception ex)
                 {
@@ -124,11 +289,62 @@ namespace Smarkets.SqliteScoreApp
             }
         }
 
+        const string TennisSmarketsFile = "TennisSmarkets.json";
 
+        const string TennisCompetitorsSmarketsFile = "TennisCompetitorsSmarkets.json";
 
+        static IEnumerable<(string id, Smarkets.Entity.XML.Result[])> ParseTennisResults()
+        {
+            foreach (var p in Newtonsoft.Json.JsonConvert.DeserializeObject<Model.JSON.States>(System.IO.File.ReadAllText(TennisSmarketsFile)).event_states)
+            {
+                if (p.state == "cancelled")
+                    continue;
+                Smarkets.Entity.XML.Result[] result = default;
+                try
+                {
+                    result = Map.ResultMap.ToResults(p).ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                if (result != null)
+                {
+                    yield return (p.id, result);
 
+                }
+                else
+                {
 
+                }
+            }
+        }
+        static IEnumerable<(string id, Smarkets.Entity.XML.MatchTeam[])> ParseTennisCompetitors()
+        {
+            foreach (var grouping in Newtonsoft.Json.JsonConvert
+                                .DeserializeObject<Model.JSON.Competitors>(System.IO.File.ReadAllText(TennisCompetitorsSmarketsFile)).competitors.GroupBy(a=>a.event_id))
+            {
+
+                Smarkets.Entity.XML.MatchTeam[] result = default;
+
+                try
+                {
+                    result = Map.CompetitorMap.ToMatchTeamEntities(grouping).ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                if (result != null)
+                {
+                    yield return (grouping.Key, result);
+
+                }
+                else
+                {
+
+                }
+            }
+        }
     }
-
-
 }

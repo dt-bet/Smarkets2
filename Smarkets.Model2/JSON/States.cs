@@ -41,7 +41,18 @@ namespace Smarkets.Model.JSON
     public class Scores
     {
         public int[] full { get; set; }
+
         public int[] half { get; set; }
+
+        public Set[] sets { get; set; }
+    }
+
+
+
+    public class Set
+    {
+        public int score_a { get; set; }
+        public int score_b { get; set; }
     }
 
 

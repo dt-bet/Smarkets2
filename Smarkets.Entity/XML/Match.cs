@@ -30,6 +30,12 @@ namespace Smarkets.Entity
         [SQLite.Ignore]
         public List<Market> Markets { get; set; }
 
+        [SQLite.Ignore]
+        public List<Entity.XML.MatchTeam> MatchTeams { get; set; }
+
+        [SQLite.Ignore]
+        public List<Entity.XML.Result> Results { get; set; }
+
     }
 
 }

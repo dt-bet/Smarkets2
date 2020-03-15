@@ -24,3 +24,5 @@ namespace Smarkets.Model.JSON
         public string type { get; set; }
     }
 }
+
+

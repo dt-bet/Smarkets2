@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odds timestamp="2019-07-22T06:33:50Z">
+<event date="2019-07-22" id="3859572" name="Benoit Paire vs Jeremy Chardy" parent="/sport/tennis/atp/hamburg-atp/round-32" parent_name="Round 32" parent_slug="/sport/tennis/atp/hamburg-atp/round-32" state="upcoming" time="13:30:00" type="Tennis match" url="/sport/tennis/atp/hamburg-atp/round-32/2019/07/22/benoit-paire-vs-jeremy-chardy">
+    <market id="8686461" slug="winner" state="open" traded_volume="217" winners="1">
+      <contract id="30067115" name="Benoit Paire" slug="benoit-paire" state_or_outcome="open">
+        <bids>
+          <price backers_stake="23.97" decimal="1.84" liability="20.13" percent="54.35"/>
+          <price backers_stake="27.96" decimal="1.93" liability="26.01" percent="51.81"/>
+          <price backers_stake="27.96" decimal="1.94" liability="26.28" percent="51.55"/>
+        </bids>
+        <offers>
+          <price backers_stake="59.85" decimal="1.79" liability="75.78" percent="55.87"/>
+          <price backers_stake="59.31" decimal="1.78" liability="76.04" percent="56.18"/>
+          <price backers_stake="52.11" decimal="1.70" liability="74.44" percent="58.82"/>
+        </offers>
+      </contract>
+      <contract id="30067118" name="Jeremy Chardy" slug="jeremy-chardy" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.80" decimal="2.28" liability="75.26" percent="43.86"/>
+          <price backers_stake="57.29" decimal="2.30" liability="74.47" percent="43.48"/>
+          <price backers_stake="66.70" decimal="2.48" liability="98.72" percent="40.32"/>
+        </bids>
+        <offers>
+          <price backers_stake="14.68" decimal="2.20" liability="12.23" percent="45.45"/>
+          <price backers_stake="21.88" decimal="2.18" liability="18.54" percent="45.87"/>
+          <price backers_stake="17.12" decimal="2.08" liability="15.86" percent="48.08"/>
+        </offers>
+      </contract>
+    </market>
+    <market id="8686464" slug="score" state="open" traded_volume="0" winners="1">
+      <contract id="30067121" name="Benoit Paire 2 - 0" slug="2-0" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.41" decimal="3.30" liability="134.37" percent="30.3"/>
+          <price backers_stake="68.15" decimal="3.55" liability="173.77" percent="28.17"/>
+          <price backers_stake="68.15" decimal="3.80" liability="190.78" percent="26.32"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.41" decimal="2.84" liability="31.74" percent="35.21"/>
+          <price backers_stake="68.15" decimal="2.74" liability="39.17" percent="36.5"/>
+          <price backers_stake="68.15" decimal="2.64" liability="41.56" percent="37.88"/>
+        </offers>
+      </contract>
+      <contract id="30067123" name="Benoit Paire 2 - 1" slug="2-1" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.41" decimal="5.1" liability="239.46" percent="19.61"/>
+          <price backers_stake="68.15" decimal="5.6" liability="313.43" percent="17.86"/>
+          <price backers_stake="68.15" decimal="6.2" liability="354.35" percent="16.13"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.41" decimal="4.2" liability="18.25" percent="23.81"/>
+          <price backers_stake="68.15" decimal="3.85" liability="23.91" percent="25.97"/>
+          <price backers_stake="68.15" decimal="3.60" liability="26.21" percent="27.78"/>
+        </offers>
+      </contract>
+      <contract id="30067126" name="Jeremy Chardy 2 - 0" slug="0-2" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.41" decimal="4.3" liability="192.72" percent="23.26"/>
+          <price backers_stake="68.15" decimal="4.8" liability="259.02" percent="20.83"/>
+          <price backers_stake="68.15" decimal="5.3" liability="293.00" percent="18.87"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.41" decimal="3.60" liability="22.47" percent="27.78"/>
+          <price backers_stake="68.15" decimal="3.35" liability="29.00" percent="29.85"/>
+          <price backers_stake="68.15" decimal="3.10" liability="32.45" percent="32.26"/>
+        </offers>
+      </contract>
+      <contract id="30067128" name="Jeremy Chardy 2 - 1" slug="1-2" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.41" decimal="5.9" liability="286.21" percent="16.95"/>
+          <price backers_stake="68.15" decimal="6.8" liability="395.14" percent="14.71"/>
+          <price backers_stake="68.15" decimal="7.8" liability="463.44" percent="12.82"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.41" decimal="4.8" liability="15.37" percent="20.83"/>
+          <price backers_stake="68.15" decimal="4.3" liability="20.66" percent="23.26"/>
+          <price backers_stake="68.15" decimal="3.90" liability="23.50" percent="25.64"/>
+        </offers>
+      </contract>
+    </market>
+    <market id="8686468" slug="set-1-winner" state="open" traded_volume="0" winners="1">
+      <contract id="30067132" name="Benoit Paire" slug="benoit-paire" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+      <contract id="30067136" name="Jeremy Chardy" slug="jeremy-chardy" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+    </market>
+    <market id="8686470" slug="set-2-winner" state="open" traded_volume="0" winners="1">
+      <contract id="30067139" name="Benoit Paire" slug="benoit-paire" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+      <contract id="30067141" name="Jeremy Chardy" slug="jeremy-chardy" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+    </market>
+  </event>
+  <event date="2019-07-22" id="3859574" name="Daniel Altmaier vs Martin Klizan" parent="/sport/tennis/atp/hamburg-atp/116-finals-r32" parent_name="1/16-finals (R32)" parent_slug="/sport/tennis/atp/hamburg-atp/116-finals-r32" state="upcoming" time="09:30:00" type="Tennis match" url="/sport/tennis/atp/hamburg-atp/116-finals-r32/2019/07/22/daniel-altmaier-vs-martin-klizan">
+    <market id="8686462" slug="winner" state="open" traded_volume="524" winners="1">
+      <contract id="30067116" name="Daniel Altmaier" slug="daniel-altmaier" state_or_outcome="open">
+        <bids>
+          <price backers_stake="57.92" decimal="2.88" liability="108.91" percent="34.72"/>
+          <price backers_stake="67.58" decimal="3.05" liability="138.51" percent="32.79"/>
+          <price backers_stake="67.58" decimal="3.20" liability="148.67" percent="31.25"/>
+        </bids>
+        <offers>
+          <price backers_stake="57.17" decimal="2.78" liability="32.11" percent="35.97"/>
+          <price backers_stake="66.69" decimal="2.74" liability="38.34" percent="36.5"/>
+          <price backers_stake="66.69" decimal="2.58" liability="42.21" percent="38.76"/>
+        </offers>
+      </contract>
+      <contract id="30067117" name="Martin Klizan" slug="martin-klizan" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.12" decimal="1.58" liability="33.71" percent="63.29"/>
+          <price backers_stake="67.81" decimal="1.67" liability="45.43" percent="59.88"/>
+          <price backers_stake="67.81" decimal="1.68" liability="46.12" percent="59.52"/>
+        </bids>
+        <offers>
+          <price backers_stake="47.83" decimal="1.54" liability="88.59" percent="64.94"/>
+          <price backers_stake="62.83" decimal="1.53" liability="118.55" percent="65.36"/>
+          <price backers_stake="62.83" decimal="1.45" liability="139.66" percent="68.97"/>
+        </offers>
+      </contract>
+    </market>
+    <market id="8686463" slug="score" state="open" traded_volume="0" winners="1">
+      <contract id="30067119" name="Daniel Altmaier 2 - 0" slug="2-0" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.12" decimal="5.4" liability="255.71" percent="18.52"/>
+          <price backers_stake="68.60" decimal="5.8" liability="329.33" percent="17.24"/>
+          <price backers_stake="67.81" decimal="6.8" liability="393.16" percent="14.71"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.12" decimal="4.3" liability="17.62" percent="23.26"/>
+          <price backers_stake="58.98" decimal="4.2" liability="18.43" percent="23.81"/>
+          <price backers_stake="67.81" decimal="3.65" liability="25.59" percent="27.4"/>
+        </offers>
+      </contract>
+      <contract id="30067120" name="Daniel Altmaier 2 - 1" slug="2-1" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.12" decimal="7.8" liability="395.24" percent="12.82"/>
+          <price backers_stake="67.81" decimal="8.8" liability="529.09" percent="11.36"/>
+          <price backers_stake="67.81" decimal="9.8" liability="596.97" percent="10.2"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.12" decimal="5.7" liability="12.36" percent="17.54"/>
+          <price backers_stake="68.60" decimal="5.3" liability="15.96" percent="18.87"/>
+          <price backers_stake="67.81" decimal="4.7" liability="18.33" percent="21.28"/>
+        </offers>
+      </contract>
+      <contract id="30067122" name="Martin Klizan 2 - 0" slug="0-2" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.12" decimal="2.66" liability="96.50" percent="37.59"/>
+          <price backers_stake="58.98" decimal="2.68" liability="99.11" percent="37.31"/>
+          <price backers_stake="67.81" decimal="2.86" liability="126.09" percent="34.97"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.12" decimal="2.28" liability="45.41" percent="43.86"/>
+          <price backers_stake="68.60" decimal="2.24" liability="55.32" percent="44.64"/>
+          <price backers_stake="67.81" decimal="2.08" liability="62.79" percent="48.08"/>
+        </offers>
+      </contract>
+      <contract id="30067124" name="Martin Klizan 2 - 1" slug="1-2" state_or_outcome="open">
+        <bids>
+          <price backers_stake="58.98" decimal="5.0" liability="235.93" percent="20.0"/>
+          <price backers_stake="67.81" decimal="5.5" liability="305.17" percent="18.18"/>
+          <price backers_stake="67.81" decimal="6.0" liability="338.96" percent="16.67"/>
+        </bids>
+        <offers>
+          <price backers_stake="58.12" decimal="4.00" liability="19.37" percent="25.0"/>
+          <price backers_stake="68.60" decimal="3.80" liability="24.51" percent="26.32"/>
+          <price backers_stake="67.81" decimal="3.50" liability="27.12" percent="28.57"/>
+        </offers>
+      </contract>
+    </market>
+    <market id="8686466" slug="set-1-winner" state="open" traded_volume="0" winners="1">
+      <contract id="30067129" name="Daniel Altmaier" slug="daniel-altmaier" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+      <contract id="30067130" name="Martin Klizan" slug="martin-klizan" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+    </market>
+    <market id="8686469" slug="set-2-winner" state="open" traded_volume="0" winners="1">
+      <contract id="30067134" name="Daniel Altmaier" slug="daniel-altmaier" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+      <contract id="30067137" name="Martin Klizan" slug="martin-klizan" state_or_outcome="open">
+        <bids/>
+        <offers/>
+      </contract>
+    </market>
+  </event>
+  <event date="2017-01-26" id="794112" name="Mitchell Krueger vs GO Soeda" parent="Round 16" parent_slug="round-16" slug="mitchell-krueger-vs-go-soeda" time="22:40:00" type="Tennis match" url="/sport/tennis/challenger/maui-challenger/round-16/mitchell-krueger-vs-go-soeda">
+        <market id="5890762" slug="score" winners="1">
+            <contract id="18439688" name="Mitchell Krueger 2 - 1" slug="2-1">
+                <bids/>
+                <offers>
+                    <price decimal="4.30" percent="23.26" backers_stake="9.05" liability="2.74"/>
+                    <price decimal="3.90" percent="25.64" backers_stake="4.52" liability="1.56"/>
+                    <price decimal="3.65" percent="27.40" backers_stake="16.59" liability="6.26"/>
+                </offers>
+            </contract>
+            <contract id="18439693" name="GO Soeda 2 - 1" slug="1-2">
+                <bids>
+                    <price decimal="95.24" percent="1.05" backers_stake="1.88" liability="176.89"/>
+                    <price decimal="140.85" percent="0.71" backers_stake="0.94" liability="131.25"/>
+                    <price decimal="188.68" percent="0.53" backers_stake="3.44" liability="645.85"/>
+                </bids>
+                <offers>
+                    <price decimal="2.98" percent="33.56" backers_stake="8.91" liability="4.50"/>
+                    <price decimal="2.88" percent="34.72" backers_stake="4.46" liability="2.37"/>
+                    <price decimal="2.78" percent="35.97" backers_stake="16.34" liability="9.18"/>
+                </offers>
+            </contract>
+            <contract id="18439687" name="Mitchell Krueger 2 - 0" slug="2-0">
+                <bids/>
+                <offers>
+                    <price decimal="3.65" percent="27.40" backers_stake="8.58" liability="3.24"/>
+                    <price decimal="3.40" percent="29.41" backers_stake="4.29" liability="1.79"/>
+                    <price decimal="3.15" percent="31.75" backers_stake="15.72" liability="7.31"/>
+                </offers>
+            </contract>
+            <contract id="18439690" name="GO Soeda 2 - 0" slug="0-2">
+                <bids>
+                    <price decimal="3.85" percent="25.97" backers_stake="8.56" liability="24.39"/>
+                    <price decimal="4.20" percent="23.81" backers_stake="4.28" liability="13.69"/>
+                    <price decimal="4.70" percent="21.28" backers_stake="15.69" liability="58.03"/>
+                </bids>
+                <offers>
+                    <price decimal="1.90" percent="52.63" backers_stake="8.89" liability="9.88"/>
+                    <price decimal="1.85" percent="54.05" backers_stake="4.44" liability="5.23"/>
+                    <price decimal="1.80" percent="55.56" backers_stake="16.30" liability="20.38"/>
+                </offers>
+            </contract>
+        </market>
+        <market id="5890760" slug="winner" winners="1">
+            <contract id="18439683" name="Mitchell Krueger" slug="mitchell-krueger">
+                <bids>
+                    <price decimal="3.35" percent="29.85" backers_stake="8.57" liability="20.14"/>
+                    <price decimal="3.60" percent="27.78" backers_stake="4.29" liability="11.14"/>
+                    <price decimal="3.85" percent="25.97" backers_stake="15.71" liability="44.79"/>
+                </bids>
+                <offers>
+                    <price decimal="3.00" percent="33.33" backers_stake="8.81" liability="4.41"/>
+                    <price decimal="2.98" percent="33.56" backers_stake="4.53" liability="2.29"/>
+                    <price decimal="2.80" percent="35.71" backers_stake="16.16" liability="8.98"/>
+                </offers>
+            </contract>
+            <contract id="18439685" name="GO Soeda" slug="go-soeda">
+                <bids>
+                    <price decimal="1.54" percent="64.94" backers_stake="8.85" liability="4.78"/>
+                    <price decimal="1.55" percent="64.52" backers_stake="4.83" liability="2.66"/>
+                    <price decimal="1.64" percent="60.98" backers_stake="16.23" liability="10.38"/>
+                </bids>
+                <offers>
+                    <price decimal="1.39" percent="71.94" backers_stake="9.38" liability="24.05"/>
+                    <price decimal="1.34" percent="74.63" backers_stake="4.69" liability="13.80"/>
+                    <price decimal="1.29" percent="77.52" backers_stake="17.20" liability="59.30"/>
+                </offers>
+            </contract>
+        </market>
+    </event>
+</odds>

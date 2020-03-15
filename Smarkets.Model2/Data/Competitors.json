@@ -1,0 +1,64 @@
+﻿{
+  "competitors": [
+    {
+      "event_id": "41607433",
+      "id": "15013",
+      "info": {},
+      "name": "Aisam Qureshi",
+      "short_code": null,
+      "short_name": "Aisam Qureshi",
+      "slug": "aisam-qureshi",
+      "type": "a"
+    },
+    {
+      "event_id": "41607433",
+      "id": "63849",
+      "info": {},
+      "name": "Nik Razborsek",
+      "short_code": null,
+      "short_name": "Nik Razborsek",
+      "slug": "nik-razborsek",
+      "type": "b"
+    },
+    {
+      "event_id": "41607434",
+      "id": "17600",
+      "info": {},
+      "name": "Aqeel Khan",
+      "short_code": null,
+      "short_name": "Aqeel Khan",
+      "slug": "aqeel-khan",
+      "type": "a"
+    },
+    {
+      "event_id": "41607434",
+      "id": "16282",
+      "info": {},
+      "name": "Blaz Kavcic",
+      "short_code": null,
+      "short_name": "Blaz Kavcic",
+      "slug": "blaz-kavcic",
+      "type": "b"
+    },
+    {
+      "event_id": "41607436",
+      "id": "15013",
+      "info": {},
+      "name": "Aisam Qureshi",
+      "short_code": null,
+      "short_name": "Aisam Qureshi",
+      "slug": "aisam-qureshi",
+      "type": "a"
+    },
+    {
+      "event_id": "41607436",
+      "id": "16282",
+      "info": {},
+      "name": "Blaz Kavcic",
+      "short_code": null,
+      "short_name": "Blaz Kavcic",
+      "slug": "blaz-kavcic",
+      "type": "b"
+    }
+  ]
+}

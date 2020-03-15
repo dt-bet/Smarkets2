@@ -15,6 +15,26 @@ namespace Smarkets.DAL.Sqlite
     {
         const string directoryName = "../../../Data";
 
+
+        public static int TransferToDB(IEnumerable<Entity.XML.Result> results, string connectionName)
+        {
+            using (var connection = new SQLiteConnection(connectionName))
+            {
+                connection.CreateTable<Entity.XML.Result>();
+                return connection.InsertAll(results);
+            }
+        }
+        public static int TransferToDB(IEnumerable<Entity.XML.MatchTeam> results, string connectionName)
+        {
+            using (var connection = new SQLiteConnection(connectionName))
+            {
+                connection.CreateTable<Entity.XML.MatchTeam>();
+                return connection.InsertAll(results);
+            }
+        }
+
+
+
         public static int TransferToDB(IEnumerable<Entity.Match> matches, string directoryName = directoryName)
         {
             int count = 0;
@@ -58,7 +78,7 @@ namespace Smarkets.DAL.Sqlite
                         List<Contract> econtracts = new List<Contract>();
                         List<Price> eprices = new List<Price>();
 
-                        foreach (var smarket in ematch.Markets.Where(m=>m.Key  == (byte)MarketType.FullTimeResult))
+                        foreach (var smarket in ematch.Markets.Where(m => m.Key == MarketType.FullTimeResult))
                         {
                             smarket.ParentId = ematch.Id;
                             if (!markets.Contains(smarket))
@@ -84,9 +104,22 @@ namespace Smarkets.DAL.Sqlite
                                 }
 
                             }
+                            if (smarket.Contracts.Count > 0)
+                            {
+                                connection.Execute("Drop table Contract");
+                                connection.CreateTable<Contract>();
+                                connection.InsertAll(smarket.Contracts);
+                            }
                         }
+
+                        if(econtracts.Count>0)
+                        {
+                            connection.Execute("Drop table Contract");
+                            connection.CreateTable<Contract>();
+                            connection.InsertAll(econtracts);
+                        }
+
                         connection.InsertAll(emarkets);
-                        connection.InsertAll(econtracts);
                         connection.InsertAll(eprices);
                         //var exceptMarkets=
                     }
@@ -131,6 +164,19 @@ namespace Smarkets.DAL.Sqlite
 
         }
 
+        public static IEnumerable<(string name, long id)> SelectInformation(string directoryName)
+        {
+
+            foreach (var sqliteFile in System.IO.Directory.EnumerateFiles(directoryName))
+            {
+                using (var connection = new SQLiteConnection(sqliteFile))
+                {
+                    yield return (sqliteFile, connection.Table<Match>().ToArray().Single().Id);
+                }
+            }
+        }
+
+
         public static IEnumerable<Entity.Match> Select(DateTime dateTime, string directoryName = directoryName)
         {
             return SelectAll(directoryName, _ => _.SingleOrDefault(__ =>
@@ -143,9 +189,9 @@ namespace Smarkets.DAL.Sqlite
             {
                 IEnumerable<FileInfo> xx = null;
                 if (predicate != null)
-                    xx = predicate.Invoke(directory.GetDirectories())?.Where(_ => _.Extension == ".sqlite");
+                    xx = predicate.Invoke(directory.GetDirectories("??_??_??"))?.Where(_ => _.Extension == ".sqlite");
                 else
-                    xx = directory.GetDirectories().SelectMany(_ => _.GetFiles("*.sqlite"));
+                    xx = directory.GetDirectories("??_??_??").SelectMany(_ => _.GetFiles("*.sqlite"));
 
                 if (xx != null)
                     foreach (var connInfo in xx)
@@ -154,10 +200,15 @@ namespace Smarkets.DAL.Sqlite
             }
         }
 
-        private static IEnumerable<Match> Select(string connName)
+        public static IEnumerable<Match> Select(string connName)
         {
+
+
             using (var connection = new SQLiteConnection(connName))
             {
+                connection.CreateTable<Entity.XML.Result>();
+                connection.CreateTable<Entity.XML.MatchTeam>();
+
                 foreach (var jevent in from match in connection.Table<Match>().ToArray()
                                        join jmarket in from market in connection.Table<Market>().ToArray()
                                                        join jcontract in from contract in connection.Table<Contract>().ToArray()
@@ -188,7 +239,10 @@ namespace Smarkets.DAL.Sqlite
                         jmarket.market.Contracts = ncontracts;
                         nmarkets.Add(jmarket.market);
                     }
+
                     jevent.match.Markets = nmarkets;
+                    jevent.match.Results = connection.Table<Entity.XML.Result>().ToList();
+                    jevent.match.MatchTeams =connection.Table<Entity.XML.MatchTeam>().ToList();
                     yield return jevent.match;
                 }
             }

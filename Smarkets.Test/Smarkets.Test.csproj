@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Smarkets\Smarkets.Map2\Smarkets.Map.csproj" />
     <ProjectReference Include="..\Smarkets.BLL\Smarkets.BLL.csproj" />
     <ProjectReference Include="..\Smarkets.DAL.Sqlite\Smarkets.DAL.Sqlite.csproj" />
     <ProjectReference Include="..\Smarkets.Entity\Smarkets.Entity.csproj" />

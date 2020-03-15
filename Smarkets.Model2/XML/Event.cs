@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace Smarkets.Model.XML
@@ -77,7 +78,16 @@ namespace Smarkets.Model.XML
             {
 
                 _parentName = value;
-                if (value.HasAnyDigits() && !value.Contains("Round") && !value.Contains("1/64") && !value.Contains("1/32") && !value.Contains("1/8") && !value.Contains("1/4") && !value.Contains("1/2"))
+
+                if (value.ToLower().Contains("tennis"))
+                {
+                    if (value.Contains('/'))
+                    {
+                        var split = value.Split('/');
+                        _parent = split[split.Length - 2];
+                    }
+                }
+                else if (value.HasAnyDigits() && !value.ToLower().Contains("round") && !value.Contains("1/64") && !value.Contains("1/32") && !value.Contains("1/8") && !value.Contains("1/4") && !value.Contains("1/2"))
                 {
 
                     var regex = new System.Text.RegularExpressions.Regex(regexr2);
@@ -91,7 +101,7 @@ namespace Smarkets.Model.XML
                     }
                     else if (value.Contains("/"))
                     {
-                        _parent=value.Split('/').Last();
+                        _parent = value.Split('/').Last();
                     }
                     else
                     {
@@ -221,11 +231,10 @@ namespace Smarkets.Model.XML
 
        // [SQLite.Ignore]
         //[NotNull]
-        public String HomeTeam { get { return Name.Split(new string[] { " vs. " }, StringSplitOptions.None)[0]; } }
-
+        public String HomeTeam=> Regex.Split( Name," vs.? " )[0]; 
         //[SQLite.Ignore]
        // [NotNull]
-        public String AwayTeam { get { return Name.Split(new string[] { " vs. " }, StringSplitOptions.None)[1]; } }
+        public String AwayTeam => Regex.Split(Name, " vs.? ")[1]; 
 
         //[SQLite.Ignore]
         public Int16? HomeTeamScore { get { return Teams[0].Statistics[0].Value; } set { Teams[0].Statistics[0].Value = value ?? 0; } }

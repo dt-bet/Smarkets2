@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Betting.Enum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,11 +20,11 @@ namespace Smarkets.Entity
         [SQLite.Indexed]
         public long ParentId { get; set; }
 
-        public Int64 Time { get; set; }
+        public long Time { get; set; }
 
 
         //Bid/Offer
-        public Byte Type { get; set; }
+        public PriceType Type { get; set; }
 
         public long Value { get; set; }
 

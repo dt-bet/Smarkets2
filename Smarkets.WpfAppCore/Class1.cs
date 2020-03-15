@@ -92,7 +92,7 @@ namespace Smarkets.WpfApp2
 
         public static IEnumerable<(long time, long home, long draw, long away)> GetOdds(Smarkets.Entity.Match src)
         {
-            var market = src.Markets.SingleOrDefault(_ => _.Key == 24);
+            var market = src.Markets.SingleOrDefault(_ => _.Key == Betting.Enum.MarketType.FullTimeResult);
             var xx = market?.IndexedContracts.Count().Equals(3) ?? false ?
                   market.IndexedContracts.ToDictionary(c => c.Key, c => c.Value.MaxOffers) :
                   default;

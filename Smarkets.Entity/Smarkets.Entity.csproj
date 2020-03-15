@@ -18,8 +18,4 @@
     <PackageReference Include="sqlite-net-base" Version="1.6.292" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Smarkets.Model2\Smarkets.Model.csproj" />
-  </ItemGroup>
-
 </Project>

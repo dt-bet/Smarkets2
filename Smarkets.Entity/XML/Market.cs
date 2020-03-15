@@ -24,7 +24,7 @@ namespace Smarkets.Entity
 
 
         [Indexed]
-        public Byte Key { get; set; }
+        public MarketType Key { get; set; }
 
         [Ignore]
         public List<Contract> Contracts { get; set; }

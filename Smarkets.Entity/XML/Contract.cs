@@ -19,9 +19,11 @@ namespace Smarkets.Entity
 
         public long ContractId { get; set; }
 
-        public Byte Key { get; set; }
+        public byte Key { get; set; }
 
-        public Int64 Condition { get; set; }
+        public long Condition { get; set; }
+
+        public string Name { get; set; }
 
         [Ignore]
         public List<Price> Prices { get; set; }
