@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Smarkets.Football.SqliteApp": {
+      "commandName": "Project",
+      "commandLineArgs": "Results"
+    }
+  }
+}

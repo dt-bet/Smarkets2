@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Net;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Collections.Generic;
-using System.Globalization;
-using Smarkets.Model.JSON;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Smarkets.DAL.Sqlite;
-using Smarkets.Entity;
 using MoreLinq;
 using Smarkets.Entity.Temp;
 using Smarkets.DAL.Temp;
@@ -31,24 +24,49 @@ namespace Smarkets.SqliteScoreApp
         {
             SQLitePCL.Batteries.Init();
 
-            if (true)
+            if (args[0]=="Tennis" && args[1]=="Teams")
                 DownloadAndParseAndStoreTennisTeams();
-            else if (false)
+            if (args[0] == "Tennis" && args[1] == "Scores")
                 DownloadAndParseAndStoreTennisScores();
-            else
+            if (args[0] == "Football" && args[1] == "Scores")
                 DownloadAndParseAndStoreFootballScores();
+            if (args[0] == "Football" && args[1] == "Teams")
+                DownloadAndParseAndStoreFootballTeams();
+            if (args[0] == "Football" && args[1] == "Scores2")
+                DownloadAndParseAndStoreScores2("football", @"../../../../Smarkets.Football.SqliteApp/Data");
         }
 
 
 
+        private static void DownloadAndParseAndStoreTennisTeams()
+        {
+            DownloadAndParseAndStoreTeams("Tennis", @"../../../../Smarkets.Tennis.SqliteApp/Data");
+         
+        }
+
         private static void DownloadAndParseAndStoreTennisScores()
         {
+            DownloadAndParseAndStoreScores("Tennis", @"../../../../Smarkets.Tennis.SqliteApp/Data");
+        }
 
-            var dir = System.IO.Directory.CreateDirectory("../../../Data/Tennis");
+
+        private static void DownloadAndParseAndStoreFootballScores()
+        {
+            DownloadAndParseAndStoreScores("Football", @"../../../../Smarkets.Football.SqliteApp/Data");
+        }
+
+        private static void DownloadAndParseAndStoreFootballTeams()
+        {
+            DownloadAndParseAndStoreTeams("Football", @"../../../../Smarkets.Football.SqliteApp/Data");
+        }
+
+        private static void DownloadAndParseAndStoreScores(string sport, string directoryRepo)
+        {
+            var dir = System.IO.Directory.CreateDirectory("../../../Data/" + sport);
             var sqlite = new UtilityDAL.Sqlite.KeyValueLite(dir.FullName);
 
-            foreach (var (date, directory) in from directory in System.IO.Directory.EnumerateDirectories(@"../../../../Smarkets.Tennis.SqliteApp/Data")
-                                              let name = System.IO.Path.GetFileName(directory)
+            foreach (var (date, directory) in from directory in Directory.EnumerateDirectories(directoryRepo)
+                                              let name = Path.GetFileName(directory)
                                               where Common.FileNameHelper.TryGetDateFromDirectoryName(name, out _)
                                               where sqlite.FindDate(directory) == null
                                               let date = Common.FileNameHelper.GetDateTimeFromDirectory(name)
@@ -79,14 +97,13 @@ namespace Smarkets.SqliteScoreApp
             Console.ReadLine();
         }
 
-        private static void DownloadAndParseAndStoreTennisTeams()
+        private static void DownloadAndParseAndStoreTeams(string sport, string directoryPath)
         {
-
-            var dir = System.IO.Directory.CreateDirectory("../../../Data/Tennis/Teams");
+            var dir = System.IO.Directory.CreateDirectory($"../../../Data/{sport}/Teams");
             var sqlite = new UtilityDAL.Sqlite.KeyValueLite(dir.FullName);
 
-            foreach (var (date, directory) in from directory in System.IO.Directory.EnumerateDirectories(@"../../../../Smarkets.Tennis.SqliteApp/Data")
-                                              let name = System.IO.Path.GetFileName(directory)
+            foreach (var (date, directory) in from directory in Directory.EnumerateDirectories(directoryPath)
+                                              let name = Path.GetFileName(directory)
                                               where Common.FileNameHelper.TryGetDateFromDirectoryName(name, out _)
                                               where sqlite.FindDate(directory) == null
                                               let date = Common.FileNameHelper.GetDateTimeFromDirectory(name)
@@ -97,7 +114,7 @@ namespace Smarkets.SqliteScoreApp
                 var info = MatchRepository.SelectInformation(directory);
 
                 //var ids = Smarkets.DAL.Sqlite.MatchRepository.Select(date).Select(a => a.EventId.ToString()).ToArray();
-                var newTeams = DownloadCompetitors(100, date, info.Select(a => a.id.ToString()).ToArray());
+                var newTeams = DownloadCompetitors(100, date, info.Select(a => a.id.ToString()).ToArray()).ToArray();
 
                 Console.WriteLine($"results downloaded {newTeams.Count()}");
                 foreach (var (ifo, newTeam) in from ifo in info
@@ -118,35 +135,119 @@ namespace Smarkets.SqliteScoreApp
         }
 
 
-        private static void DownloadAndParseAndStoreFootballScores()
+        private static void DownloadAndParseAndStoreScores2(string sport, string directoryRepo)
         {
+            var dir = Directory.CreateDirectory("../../../Data/" + sport);
+            var kvLite = new UtilityDAL.Sqlite.KeyValueLite(dir.FullName);
+            using var sqlite = new SQLite.SQLiteConnection(Path.Combine(dir.FullName, "Teams.sqlite"));
+            var results = sqlite.Table<Result>().ToArray();
 
-            DateTime minDate = File.ReadAllLines("../../../Data/filesparsed.txt")
-                .Where(_ => !string.IsNullOrEmpty(_))
-                .Select(_ => DateTime.ParseExact(_, Constants.dateTimeFormat, CultureInfo.InvariantCulture))
-                .Max();
-
-            var get = repo.Get();
-            dictTeams = get.Teams;
-            hsResults = get.Results;
-
-            HashSet<long> dates = new HashSet<long>();
-
-            // Only deserialize files with unique days
-            Func<DateTime, bool> func = d => dates.Add(d.Date.Ticks);
-            foreach (var file in Smarkets.DAL.XML.Repo.SelectFiles(minDate, selector: func))
+            foreach (var (date, directory) in from directory in Directory.EnumerateDirectories(directoryRepo)
+                                              let name = Path.GetFileName(directory)
+                                              where Common.FileNameHelper.TryGetDateFromDirectoryName(name, out _)
+                                              where kvLite.FindDate(directory) == null
+                                              let date = Common.FileNameHelper.GetDateTimeFromDirectory(name)
+                                              select
+                                              (date, directory))
             {
-                var ids = GetIds(file).ToArray();
-                var newResults = Download(100, file.TimeStamp, ids.Except(results.Select(_ => _.Id.ToString())).ToArray()).ToArray();
-                repo.Persist(teams, newResults);
-                results.AddRange(newResults);
-                Console.WriteLine($"results added {newResults.Count()}");
-                Console.WriteLine(file.TimeStamp);
-                File.AppendAllLines("../../../Data/filesparsed.txt", new[] { file.TimeStamp.ToString(Smarkets.Constants.dateTimeFormat) });
+
+                foreach ((string ifo, Result result) in from ifo in MatchRepository.SelectInformation(directory)
+                                                 join result in results
+                                                 on ifo.id equals result.Id
+                                                 select (ifo.name, result))
+                {
+
+                    Console.WriteLine(ifo);
+                    var newResults = Map.ResultMap.ToResults(result);
+                    try
+                    {
+                        int transferred = MatchRepository.TransferToDB(newResults, ifo);
+                    }
+                    catch(Exception ex)
+                    {
+                        
+                        Console.WriteLine(ex.Message);
+                        Console.ReadLine();
+                    }
+                }
+                kvLite.Insert(new KeyValuePair<string, long>(directory, date.Ticks));
             }
             Console.WriteLine("Finished");
             Console.ReadLine();
         }
+
+
+        //private static void DownloadAndParseAndStoreTennisScores()
+        //{
+
+        //    var dir = System.IO.Directory.CreateDirectory("../../../Data/Tennis");
+        //    var sqlite = new UtilityDAL.Sqlite.KeyValueLite(dir.FullName);
+
+        //    foreach (var (date, directory) in from directory in System.IO.Directory.EnumerateDirectories(@"../../../../Smarkets.Tennis.SqliteApp/Data")
+        //                                      let name = System.IO.Path.GetFileName(directory)
+        //                                      where Common.FileNameHelper.TryGetDateFromDirectoryName(name, out _)
+        //                                      where sqlite.FindDate(directory) == null
+        //                                      let date = Common.FileNameHelper.GetDateTimeFromDirectory(name)
+        //                                      select
+        //                                      (date, directory))
+        //    {
+
+        //        var info = MatchRepository.SelectInformation(directory);
+
+        //        //var ids = Smarkets.DAL.Sqlite.MatchRepository.Select(date).Select(a => a.EventId.ToString()).ToArray();
+        //        var newResults = Download2(100, date, info.Select(a => a.id.ToString()).ToArray());
+
+        //        Console.WriteLine($"results downloaded {newResults.Count()}");
+        //        foreach (var (ifo, newResult) in from ifo in info
+        //                                         join newResult in newResults
+        //                                         on ifo.id.ToString() equals newResult.id
+        //                                         select (ifo, newResult))
+        //        {
+        //            int transferred = MatchRepository.TransferToDB(newResult.Item2, ifo.name);
+        //            Console.WriteLine($"results added {transferred}");
+        //            Console.Write(ifo.name);
+        //            Console.Write(ifo.id);
+        //        }
+
+        //        sqlite.Insert(new KeyValuePair<string, long>(directory, date.Ticks));
+        //    }
+        //    Console.WriteLine("Finished");
+        //    Console.ReadLine();
+        //}
+
+
+
+
+
+        //private static void DownloadAndParseAndStoreFootballScores()
+        //{
+
+        //    DateTime minDate = File.ReadAllLines("../../../Data/filesparsed.txt")
+        //        .Where(_ => !string.IsNullOrEmpty(_))
+        //        .Select(_ => DateTime.ParseExact(_, Constants.dateTimeFormat, CultureInfo.InvariantCulture))
+        //        .Max();
+
+        //    var get = repo.Get();
+        //    dictTeams = get.Teams;
+        //    hsResults = get.Results;
+
+        //    HashSet<long> dates = new HashSet<long>();
+
+        //    // Only deserialize files with unique days
+        //    Func<DateTime, bool> func = d => dates.Add(d.Date.Ticks);
+        //    foreach (var file in Smarkets.DAL.XML.Repo.SelectFiles(minDate, selector: func))
+        //    {
+        //        var ids = GetIds(file).ToArray();
+        //        var newResults = Download(100, file.TimeStamp, ids.Except(results.Select(_ => _.Id.ToString())).ToArray()).ToArray();
+        //        repo.Persist(teams, newResults);
+        //        results.AddRange(newResults);
+        //        Console.WriteLine($"results added {newResults.Count()}");
+        //        Console.WriteLine(file.TimeStamp);
+        //        File.AppendAllLines("../../../Data/filesparsed.txt", new[] { file.TimeStamp.ToString(Smarkets.Constants.dateTimeFormat) });
+        //    }
+        //    Console.WriteLine("Finished");
+        //    Console.ReadLine();
+        //}
 
 
         static string[] GetIds(Model.XML.Odds file)

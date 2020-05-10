@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Betting.Entity.SQLite" Version="2.2.1" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smarkets\Smarkets.DAL\Smarkets.DAL.XML.csproj" />
+    <ProjectReference Include="..\..\Smarkets\Smarkets.Map2\Smarkets.Map.csproj" />
+    <ProjectReference Include="..\Smarkets.Common\Smarkets.Common.csproj" />
+    <ProjectReference Include="..\Smarkets.DAL.Sqlite\Smarkets.DAL.Sqlite.csproj" />
+  </ItemGroup>
+
+</Project>

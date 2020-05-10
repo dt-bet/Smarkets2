@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UtilityEnum;
 
 namespace Smarkets.Entity.XML
 {
     public enum TeamClass
     {
-        None, A, B
+        None, 
+        [NamesAttribute("home")]
+        A,
+        [NamesAttribute("away")]
+        B,
+        Draw
     }
 
     public enum ScoreType
     {
-        None, Game, Set
+        None, Game, Set, GameHalf
 
     }
 
     public enum ScorePeriod
     {
-        None, FirstSet, SecondSet, ThirdSet, FourthSet, FifthSet, FullTime
+        None, FirstSet, SecondSet, ThirdSet, FourthSet, FifthSet, FullTime, HalfTime
     }
 
     public class Result

@@ -30,7 +30,7 @@ namespace Smarkets.Entity
         public List<Contract> Contracts { get; set; }
 
         public Dictionary<ContractType, Contract> IndexedContracts => (from c in Contracts group c by 
-                                                                       (ContractType)Enum.ToObject(typeof(ContractType),c.Key) 
+                                                                       c.Key
                                                                        into vv select vv).ToDictionary(a => a.Key, a => a.Single());
 
 

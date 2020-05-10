@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Betting.Enum;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Smarkets.Entity
 
         public long ContractId { get; set; }
 
-        public byte Key { get; set; }
+        public ContractType Key { get; set; }
 
         public long Condition { get; set; }
 
@@ -43,7 +44,6 @@ namespace Smarkets.Entity
         public override int GetHashCode()
         {
             var hashCode = 868662804;
-            hashCode = hashCode * -1521134295;
             hashCode = hashCode * -1521134295 + Key.GetHashCode();
             return hashCode;
         }

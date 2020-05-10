@@ -61,8 +61,12 @@ namespace Smarkets.DAL.Sqlite
                         else
                         {
                             //Console.WriteLine("Updating - " + ematch.Url);
-                            var dbmatch = connection.Table<Match>().ToArray().First();
-                            if (ematch.Start != dbmatch.Start)
+                            var dbmatch = connection.Table<Match>().ToArray().FirstOrDefault();
+                            if(dbmatch==null)
+                            { 
+                                connection.Insert(ematch);
+                            }
+                            else if (ematch.Start != dbmatch.Start)
                             {
                                 dbmatch.Start = ematch.Start;
                                 connection.Update(dbmatch);
@@ -104,20 +108,20 @@ namespace Smarkets.DAL.Sqlite
                                 }
 
                             }
-                            if (smarket.Contracts.Count > 0)
-                            {
-                                connection.Execute("Drop table Contract");
-                                connection.CreateTable<Contract>();
-                                connection.InsertAll(smarket.Contracts);
-                            }
+                            //if (smarket.Contracts.Count > 0)
+                            //{
+                            //    connection.Execute("Drop table Contract");
+                            //    connection.CreateTable<Contract>();
+                            //    connection.InsertAll(smarket.Contracts);
+                            //}
                         }
 
-                        if(econtracts.Count>0)
-                        {
-                            connection.Execute("Drop table Contract");
-                            connection.CreateTable<Contract>();
+                        //if(econtracts.Count>0)
+                        //{
+                            //connection.Execute("Drop table Contract");
+                            //connection.CreateTable<Contract>();
                             connection.InsertAll(econtracts);
-                        }
+                       // }
 
                         connection.InsertAll(emarkets);
                         connection.InsertAll(eprices);
@@ -171,11 +175,20 @@ namespace Smarkets.DAL.Sqlite
             {
                 using (var connection = new SQLiteConnection(sqliteFile))
                 {
-                    yield return (sqliteFile, connection.Table<Match>().ToArray().Single().Id);
+                    if (connection.Query<NameTable>($"SELECT name FROM sqlite_master WHERE name='{nameof(Match)}'").Count> 0)
+                    {
+                        var arr = connection.Table<Match>().ToArray();
+                        if (arr.Any())
+                            yield return (sqliteFile, connection.Table<Match>().ToArray().Single().Id);
+                    }
                 }
             }
+        
         }
-
+        class NameTable
+        {
+            string Name { get; set; }
+        }
 
         public static IEnumerable<Entity.Match> Select(DateTime dateTime, string directoryName = directoryName)
         {

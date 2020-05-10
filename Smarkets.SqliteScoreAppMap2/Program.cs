@@ -49,24 +49,24 @@ namespace Smarkets.SqliteScoreApp
         //    }
         //}
 
-        private static IEnumerable<(Entity.Temp.Result result, Smarkets.Entity.Temp.Team team1, Smarkets.Entity.Temp.Team team2)> Gd()
-        {
-            using (var conn = new SQLite.SQLiteConnection("..//..//..//..//Smarkets.SqliteScoreApp//bin//debug//netcoreapp2.0//Teams.sqlite"))
-            {
-                var teams = conn.Table<Smarkets.Entity.Temp.Team>().ToList();
-                foreach ((Entity.Temp.Result result, Smarkets.Entity.Temp.Team team1, Smarkets.Entity.Temp.Team team2) ty
-                                                in from result in conn.Table<Smarkets.Entity.Temp.Result>().ToList()
-                                                   where result.HasResult
-                                                   join team in teams on
-                                                   result.Team1Id equals team.Id
-                                                   into xx
-                                                   join team in teams on
-                                                 result.Team2Id equals team.Id
-                                                 into xy
-                                                   select (result, xx.Single(), xy.Single()))
+        //private static IEnumerable<(Entity.Temp.Result result, Smarkets.Entity.Temp.Team team1, Smarkets.Entity.Temp.Team team2)> Gd()
+        //{
+        //    using (var conn = new SQLite.SQLiteConnection("..//..//..//..//Smarkets.SqliteScoreApp//bin//debug//netcoreapp2.0//Teams.sqlite"))
+        //    {
+        //        var teams = conn.Table<Smarkets.Entity.Temp.Team>().ToList();
+        //        foreach ((Entity.Temp.Result result, Smarkets.Entity.Temp.Team team1, Smarkets.Entity.Temp.Team team2) ty
+        //                                        in from result in conn.Table<Smarkets.Entity.Temp.Result>().ToList()
+        //                                           where result.HasResult
+        //                                           join team in teams on
+        //                                           result.Team1Id equals team.Id
+        //                                           into xx
+        //                                           join team in teams on
+        //                                         result.Team2Id equals team.Id
+        //                                         into xy
+        //                                           select (result, xx.Single(), xy.Single()))
 
-                    yield return ty;
-            }
-        }
+        //            yield return ty;
+        //    }
+        //}
     }
 }
